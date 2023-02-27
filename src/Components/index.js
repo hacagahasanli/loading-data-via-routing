@@ -1,8 +1,5 @@
 import { NotFound } from "./ErroPage";
-import Posts from "./Posts";
+import Posts, { postsLoader } from "./Posts";
+import Post, { postLoader } from "./Post";
 
-///loaders
-
-import { postLoader } from "./Posts";
-
-export { NotFound, Posts, postLoader }
+export { NotFound, Posts, postsLoader, Post, postLoader };

@@ -1,6 +1,6 @@
 import { Home } from "./pages";
-import { RouterProvider, createBrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { NotFound, Posts, postLoader } from "./Components";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { NotFound, Posts, postsLoader, Post, postLoader } from "./Components";
 
 const router = createBrowserRouter([
   {
@@ -11,14 +11,15 @@ const router = createBrowserRouter([
   {
     path: "/posts",
     element: <Posts />,
-    loader: postLoader
-  }
+    loader: postsLoader,
+  },
+  {
+    path: "/posts/:id",
+    element: <Post />,
+    loader: postLoader,
+  },
 ]);
 
-const App = () => {
-  return (
-    <RouterProvider {...{ router }} />
-  );
-}
+const App = () => <RouterProvider {...{ router }} />;
 
 export default App;
