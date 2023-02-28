@@ -23,11 +23,24 @@ export default function Post() {
       <ButtonContainer>
         <Button onClick={returnHome}>Home</Button>
         <Button onClick={returnBack}>Posts</Button>
-        <StyledLink to={`/posts/${id}/edit`}>Edit</StyledLink>
+        <StyledLink to={`/comments/${id}`}>Comments</StyledLink>
       </ButtonContainer>
     </StyledContainer>
   );
 }
+
+const getSelectedPost = async (id) => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const post = await res.json();
+  return post;
+}
+
+export const postLoader = async ({ params }) => {
+  const { id } = params;
+
+  return defer({ post: getSelectedPost(id), id })
+};
+
 
 const SelectedPost = () => {
   const post = useAsyncValue()
@@ -79,21 +92,13 @@ const styles = css`
   text-decoration: none;
   color: black;
 `
-const Button = styled.button`
- ${styles}
-`;
+
 const StyledLink = styled(Link)`
  ${styles}
  letter-spacing: 0.1rem;
  font-weight: 800;
 `
-const getSelectedPost = async (id) => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-  const post = await res.json();
-  return post;
-}
-export const postLoader = async ({ params }) => {
-  const { id } = params;
-  // const selectedPost = await getSelectedPost(params);
-  return defer({ post: getSelectedPost(id), id })
-};
+const Button = styled.button`
+ ${styles}
+`;
+

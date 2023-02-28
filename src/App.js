@@ -1,6 +1,6 @@
 import { Home } from "./pages";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { NotFound, Posts, postsLoader, Post, postLoader, Edit } from "./Components";
+import { NotFound, Posts, postsLoader, Post, postLoader, Comments, commentLoader } from "./Components";
 
 const router = createBrowserRouter([
   {
@@ -19,9 +19,9 @@ const router = createBrowserRouter([
     loader: postLoader,
   },
   {
-    path: "/posts/:id/edit",
-    element: <Edit />,
-    // loader: postLoader,
+    path: "/comments/:id",
+    element: <Comments />,
+    loader: commentLoader,
   },
 ]);
 

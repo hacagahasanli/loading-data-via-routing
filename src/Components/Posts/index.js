@@ -29,6 +29,18 @@ export default function Posts() {
   );
 }
 
+const getPosts = async () => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const data = await res.json()
+  return data;
+}
+
+const postsLoader = async () => {
+  return defer({ posts: getPosts() })
+};
+
+export { postsLoader };
+
 const StyledPosts = styled.ul`
   color: #c1c1c1;
   max-width: 600px;
@@ -55,14 +67,3 @@ const StyledContainer = styled.div`
   flex-direction: column;
 `;
 
-const getPosts = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-  const data = await res.json()
-  return data;
-}
-
-const postsLoader = async () => {
-  return defer({ posts: getPosts() })
-};
-
-export { postsLoader };
