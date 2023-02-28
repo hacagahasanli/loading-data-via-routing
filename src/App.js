@@ -1,6 +1,6 @@
 import { Home } from "./pages";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { NotFound, Posts, postsLoader, Post, postLoader } from "./Components";
+import { NotFound, Posts, postsLoader, Post, postLoader, Edit } from "./Components";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +20,8 @@ const router = createBrowserRouter([
   },
   {
     path: "/posts/:id/edit",
-    element: <Post />,
-    loader: postLoader,
+    element: <Edit />,
+    // loader: postLoader,
   },
 ]);
 

@@ -1,6 +1,7 @@
-import React from "react";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import React, { Suspense } from "react";
+import { Await, defer, Link, useAsyncValue, useLoaderData, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
+import Fallback from "../Fallback";
 
 export default function Post() {
   const navigate = useNavigate();
@@ -10,11 +11,15 @@ export default function Post() {
   const returnHome = () => navigate("/", { replace: true });
   const returnBack = () => navigate(-1);
 
-  if (post) postData = <SelectedPost {...{ post }} />;
+  if (post) postData = <SelectedPost />;
 
   return (
     <StyledContainer>
-      {postData}
+      <Suspense fallback={<Fallback />}>
+        <Await resolve={post}>
+          {postData}
+        </Await>
+      </Suspense>
       <ButtonContainer>
         <Button onClick={returnHome}>Home</Button>
         <Button onClick={returnBack}>Posts</Button>
@@ -24,15 +29,15 @@ export default function Post() {
   );
 }
 
-const SelectedPost = (post) => {
-  const { id, body, title } = post?.post
+const SelectedPost = () => {
+  const post = useAsyncValue()
+  const { id, body, title } = post
   return <StyledPosts>
     <li>{id}</li>
     <li>{title}</li>
     <li>{body}</li>
   </StyledPosts>
 }
-
 const ButtonContainer = styled.div`
   margin-top: 0.5rem;
   display: flex;
@@ -82,11 +87,13 @@ const StyledLink = styled(Link)`
  letter-spacing: 0.1rem;
  font-weight: 800;
 `
-
-export const postLoader = async ({ params }) => {
-  const { id } = params;
+const getSelectedPost = async (id) => {
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
   const post = await res.json();
-
-  return { post, id };
+  return post;
+}
+export const postLoader = async ({ params }) => {
+  const { id } = params;
+  // const selectedPost = await getSelectedPost(params);
+  return defer({ post: getSelectedPost(id), id })
 };

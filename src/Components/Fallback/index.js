@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export default function Fallback() {
     return (
         <StyledContainer>
-            <span></span>
+            <span>Just wait a second robot !....</span>
         </StyledContainer>
     )
 }

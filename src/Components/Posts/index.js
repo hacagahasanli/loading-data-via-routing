@@ -4,25 +4,27 @@ import styled from "styled-components";
 import Fallback from "../Fallback";
 
 export default function Posts() {
-  const posts = useLoaderData();
+  const { posts } = useLoaderData();
   return (
     <StyledContainer>
       <Suspense fallback={<Fallback />}>
-        <Await resolve>
-
+        <Await resolve={posts}>
+          {(receivedPosts) =>
+          (<>
+            {
+              receivedPosts?.map(({ id, title, body }) =>
+                <Link key={id} to={`/posts/${id}`} style={{ textDecoration: "none" }}>
+                  <StyledPosts key={id}>
+                    <li>{id}</li>
+                    <li>{title}</li>
+                    <li>{body}</li>
+                  </StyledPosts>
+                </Link>
+              )
+            }
+          </>)}
         </Await>
       </Suspense>
-      {posts?.map(({ id, title, body }) => {
-        return (
-          <Link key={id} to={`/posts/${id}`} style={{ textDecoration: "none" }}>
-            <StyledPosts key={id}>
-              <li>{id}</li>
-              <li>{title}</li>
-              <li>{body}</li>
-            </StyledPosts>
-          </Link>
-        );
-      })}
     </StyledContainer>
   );
 }
@@ -55,11 +57,12 @@ const StyledContainer = styled.div`
 
 const getPosts = async () => {
   const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-  return res.json();
+  const data = await res.json()
+  return data;
 }
 
 const postsLoader = async () => {
-  return defer({ posts: getPosts })
+  return defer({ posts: getPosts() })
 };
 
 export { postsLoader };
