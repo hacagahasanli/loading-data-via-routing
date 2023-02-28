@@ -3,32 +3,35 @@ import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 export default function Post() {
-    const navigate = useNavigate();
-    const { post, id } = useLoaderData();
+  const navigate = useNavigate();
+  const { post, id } = useLoaderData();
 
-    let postData = <p>No Related Data</p>;
-    const returnHome = () => navigate("/", { replace: true });
-    const returnBack = () => navigate(-1);
+  let postData = <p>No Related Data</p>;
+  const returnHome = () => navigate("/", { replace: true });
+  const returnBack = () => navigate(-1);
 
-    if (post)
-        postData = (
-            <StyledPosts>
-                <li>{post.id}</li>
-                <li>{post.title}</li>
-                <li>{post.body}</li>
-            </StyledPosts>
-        );
+  if (post) postData = <SelectedPost {...{ post }} />;
 
-    return (
-        <StyledContainer>
-            {postData}
-            <ButtonContainer>
-                <Button onClick={returnHome}>Home</Button>
-                <Button onClick={returnBack}>Posts</Button>
-                <StyledLink to={`/posts/${id}/edit`}>Edit</StyledLink>
-            </ButtonContainer>
-        </StyledContainer>
-    );
+  return (
+    <StyledContainer>
+      {postData}
+      <ButtonContainer>
+        <Button onClick={returnHome}>Home</Button>
+        <Button onClick={returnBack}>Posts</Button>
+        <StyledLink to={`/posts/${id}/edit`}>Edit</StyledLink>
+      </ButtonContainer>
+    </StyledContainer>
+  );
+}
+
+const SelectedPost = (post) => {
+  const { id, body, title } = post?.post
+  return <StyledPosts>
+
+    <li>{id}</li>
+    <li>{title}</li>
+    <li>{body}</li>
+  </StyledPosts>
 }
 
 const ButtonContainer = styled.div`
@@ -84,9 +87,9 @@ const StyledLink = styled(Link)`
 `
 
 export const postLoader = async ({ params }) => {
-    const { id } = params;
-    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-    const post = await res.json();
+  const { id } = params;
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const post = await res.json();
 
-    return { post, id };
+  return { post, id };
 };
