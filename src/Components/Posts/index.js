@@ -1,11 +1,17 @@
-import React from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import React, { Suspense } from "react";
+import { Await, defer, Link, useLoaderData } from "react-router-dom";
 import styled from "styled-components";
+import Fallback from "../Fallback";
 
 export default function Posts() {
   const posts = useLoaderData();
   return (
     <StyledContainer>
+      <Suspense fallback={<Fallback />}>
+        <Await resolve>
+
+        </Await>
+      </Suspense>
       {posts?.map(({ id, title, body }) => {
         return (
           <Link key={id} to={`/posts/${id}`} style={{ textDecoration: "none" }}>
@@ -47,9 +53,13 @@ const StyledContainer = styled.div`
   flex-direction: column;
 `;
 
-const postsLoader = async () => {
+const getPosts = async () => {
   const res = await fetch("https://jsonplaceholder.typicode.com/posts");
   return res.json();
+}
+
+const postsLoader = async () => {
+  return defer({ posts: getPosts })
 };
 
 export { postsLoader };

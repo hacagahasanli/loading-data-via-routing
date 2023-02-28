@@ -18,6 +18,11 @@ const router = createBrowserRouter([
     element: <Post />,
     loader: postLoader,
   },
+  {
+    path: "/posts/:id/edit",
+    element: <Post />,
+    loader: postLoader,
+  },
 ]);
 
 const App = () => <RouterProvider {...{ router }} />;

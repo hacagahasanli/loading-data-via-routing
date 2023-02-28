@@ -27,7 +27,6 @@ export default function Post() {
 const SelectedPost = (post) => {
   const { id, body, title } = post?.post
   return <StyledPosts>
-
     <li>{id}</li>
     <li>{title}</li>
     <li>{body}</li>
@@ -64,7 +63,6 @@ const StyledContainer = styled.div`
   align-items: center;
   flex-direction: column;
 `;
-
 const styles = css`
     outline: none;
   padding: 0.8rem 2rem;
@@ -79,7 +77,6 @@ const styles = css`
 const Button = styled.button`
  ${styles}
 `;
-
 const StyledLink = styled(Link)`
  ${styles}
  letter-spacing: 0.1rem;
